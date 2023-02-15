@@ -3,6 +3,16 @@
 	"EngineAssociation": "5.1",
 	"Category": "",
 	"Description": "",
+	"Modules": [
+		{
+			"Name": "DarkFaith",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Paper2D"
+			]
+		}
+	],
 	"Plugins": [
 		{
 			"Name": "ModelingToolsEditorMode",
