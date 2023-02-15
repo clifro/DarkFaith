@@ -8,6 +8,8 @@
 #include "DarkFaith/Attributes/DFAttributes.h"
 #include "DFCharacterBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthUpdated, float, Health, float, MaxHealth);
+
 UENUM()
 enum EDFCharacterState
 {
@@ -28,13 +30,25 @@ class DARKFAITH_API ADFCharacterBase : public APaperCharacter
 
 public:
 
+	UPROPERTY(BlueprintAssignable)
+		FOnHealthUpdated OnHealthUpdated;
+
 	FORCEINLINE bool IsAlive() { return CurrentHealth > 0; }
 
 	UPROPERTY()
 		TEnumAsByte<EDFCharacterState> CurrentState = EDFCharacterState::None;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float CurrentHealth;
+
+	UPROPERTY()
+		float MaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool DestroyOnDeath = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DestroyOnDeathTime = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FDFAttackData> AttackData;

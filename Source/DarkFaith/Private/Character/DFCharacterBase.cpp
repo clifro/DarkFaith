@@ -48,6 +48,7 @@ void ADFCharacterBase::UpdateAttributes()
 		if (data)
 		{
 			CurrentHealth = data->Attributes.MaxHealth;
+			MaxHealth = data->Attributes.MaxHealth;
 
 			if (GetCharacterMovement())
 			{
@@ -72,13 +73,18 @@ void ADFCharacterBase::TakeDamage(AActor* DamagedActor, float Damage, const clas
 			PlayFlipBook(DeathFlipbook);
 			CurrentHealth = 0;
 			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			SetLifeSpan(2);
+
+			if(DestroyOnDeath)
+				SetLifeSpan(DestroyOnDeathTime);
 		}
 		else
 		{
 			CurrentState = EDFCharacterState::TakeHit;
 			PlayFlipBook(HitFlipbook);
 		}
+
+		if(OnHealthUpdated.IsBound())
+			OnHealthUpdated.Broadcast(CurrentHealth, MaxHealth);
 	}
 }
 
